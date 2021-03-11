@@ -1,11 +1,18 @@
 import React from 'react';
 import axios from 'axios';
-import { Component } from 'react';
-import {Paper, Table, TableBody, TableRow, TableHead, TableCell, TableContainer, Fade, Tooltip, withStyles} from '@material-ui/core';
+import { Component, useEffect } from 'react';
+import {Paper, Table, TableBody, TableRow, TableHead, TableCell, TableContainer, Fade, Tooltip, withStyles, Button} from '@material-ui/core';
+import {Dialog, DialogContent, DialogActions, DialogContentText, DialogTitle, Snackbar} from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SearchIcon from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton';
+import MuiAlert from '@material-ui/lab/Alert';
+import EditPatient from './EditPatient';
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const styles = theme => ({
   TableCell: {
@@ -13,12 +20,30 @@ const styles = theme => ({
   }
 })
 
+
 export default withStyles(styles)(class Patients extends Component {
 
   state = {
     newPatient: null,
-    patients: []
+    patients: [],
+    openRemove: false,
+    openRemoveSuccess: false,
+    removeId: null,
   }
+
+  handleToggle = () => {
+    this.setState({
+        openRemove: !this.state.openRemove
+    })
+  }
+
+  handleRemoveSnackbar = () => {
+    this.setState({
+      openRemoveSucess: !this.state.openRemoveSucess
+    })
+  }
+
+ 
 
   fetchPatients = async () => {
     try {
@@ -40,14 +65,49 @@ export default withStyles(styles)(class Patients extends Component {
     this.fetchPatients();
   }
 
-  remove(id) {
-    let updatePatient = [...this.state.invoices].filter(i => i.id !== id);
-    this.setState({ invoices: updatePatient })
+  useEffect = () => {
+    this.remove()
   }
+
+  getIDTable(id) {
+    console.log(id)
+  }
+
+
+  removePatient = async () => {
+    const id = this.state.removeId
+    const params = {
+      "id" : this.state.removeId
+    }
+    console.log(params)
+    console.log(this.state.removeId)
+    console.log(id)
+    try {
+      const res = await axios.delete(`/patients/{id}`, params).then(this.setState({ openRemoveSucess: true }));
+      window.location.reload();
+      console.log(res.data)
+      /*
+      console.log(res.data.Items.length)
+      const response = await fetch('/patients');
+      const body = await response.json();
+      this.setState({patients: response.data})
+      */
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  remove() {
+    this.setState({ openRemoveSucess: true, openRemove: false});
+  }
+  
+
+  
 
   render() {
     const allPatients = this.state.patients;
     const { classes } = this.props;
+    const {openRemove, openRemoveSucess} = this.state;
     return (
       <div>
         <Paper style={{ margin: 20 }}>
@@ -77,23 +137,20 @@ export default withStyles(styles)(class Patients extends Component {
                     <TableCell >{body.sexo}</TableCell>
                     <TableCell align="center">
                       <Tooltip TransitionComponent={Fade} TransitionProps={{ timeout: 600 }} title="Editar">
-                        <IconButton onClick={() => this.remove(body.id)}>
+                        <IconButton onClick={this.getIDTable(body.id)}>
                           <EditIcon></EditIcon>
                         </IconButton>
                       </Tooltip>
                       <Tooltip TransitionComponent={Fade} TransitionProps={{ timeout: 600 }} title="Excluir">
-                      <IconButton >
-                        <DeleteIcon />
+                      <IconButton onClick={this.handleToggle}>
+                        <DeleteIcon/>
                       </IconButton>
                       </Tooltip>
-                      <Tooltip TransitionComponent={Fade} TransitionProps={{ timeout: 600 }} title="Ver Mais">
+                      {/* <Tooltip TransitionComponent={Fade} TransitionProps={{ timeout: 600 }} title="Ver Mais">
                       <IconButton >
                         <SearchIcon />
                       </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                    <TableCell>
-
+                      </Tooltip> */}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -101,6 +158,31 @@ export default withStyles(styles)(class Patients extends Component {
             </Table>
           </TableContainer>
         </Paper>
+        <Dialog
+        open={openRemove}
+        onClose={this.handleToggle}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description">
+        <DialogTitle id="alert-dialog-title">{"Remover Paciente"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Você tem certeza que deseja excluir este paciente?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.handleToggle} color="primary">
+            Não
+          </Button>
+          <Button onClick={this.remove} color="primary">
+            Sim
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Snackbar open={this.state.openRemoveSucess} autoHideDuration={3000} onClose={this.handleRemoveSnackbar}>
+        <Alert severity="success" onClose={this.handleRemoveSnackbar}>
+            Paciente deletado com sucesso!
+        </Alert>
+      </Snackbar>
       </div >
     )
   }

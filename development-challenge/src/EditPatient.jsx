@@ -26,16 +26,11 @@ const styles = theme => ({
         width: '13rem',
         margin: 20
     },
-    Fab: {
-        position: 'relative',
-        marginTop: theme.spacing(3),
-    }
-
 })
 
 export default withStyles(styles)(class CreatePatient extends Component {
     state = {
-        open: false,
+        open: true,
         openSucess: false,
         patient: {
             id: "",
@@ -133,19 +128,11 @@ export default withStyles(styles)(class CreatePatient extends Component {
             { classes } = this.props
         return (
         <Fragment>
-            <Tooltip TransitionComponent={Fade} TransitionProps={{ timeout: 700 }} title="Adicionar Paciente">
-                <Fab color="primary" onClick={this.handleToggle} className={classes.Fab}>
-                    <AddIcon />
-                </Fab>
-            </Tooltip>
-            {/* <Button variant="fab" onClick={this.handleToggle} mini color="inherit">
-                <AddIcon />
-            </Button> */}
             <Dialog open={open} onClose={this.handleToggle}>
                 <DialogTitle id="form-dialog-title">Editar Paciente</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Por favor, preencha os dados abaixo:
+                        Paciente {this.state.patient.nome}
                 </DialogContentText>
                     <form onSubmit={event => this.handleSubmit()}>
                         <TextField className={classes.FormControl} id="nome" label="Nome Completo" value={nome} onChange={this.handleChange('nome')} margin="normal" required />

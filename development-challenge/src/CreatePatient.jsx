@@ -80,8 +80,8 @@ export default withStyles(styles)(class CreatePatient extends Component {
             const res = await axios.get('/patients');
             this.setState({ patients: res.data.Items })
             this.setState({ lastId: res.data.Items.length + 1 })
-            console.log(this.state.lastId)
             /* const response = await fetch('/patients');
+            console.log(this.state.lastId)
             const body = await response.json();
             this.setState({patients: response.data})*/
         } catch (err) {
