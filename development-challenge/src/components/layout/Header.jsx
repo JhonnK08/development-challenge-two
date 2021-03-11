@@ -53,14 +53,6 @@ export default function Menu() {
           onKeyDown={toggleDrawer(anchor, false)}
         >
           <List>
-              <ListItem button key={'Cadastro'}>
-                <ListItemIcon><PersonAddIcon/></ListItemIcon>
-                <ListItemText primary={'Cadastro'} />
-              </ListItem>
-              <ListItem button key={'Lista de Pacientes'}>
-                <ListItemIcon><PeopleAltIcon/></ListItemIcon>
-                <ListItemText primary={'Lista de Pacientes'} />
-              </ListItem>
               <ListItem button key={'Contato'}>
                 <ListItemIcon><MailIcon/></ListItemIcon>
                 <ListItemText primary={'Contato'} />

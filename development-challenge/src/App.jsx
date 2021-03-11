@@ -12,7 +12,6 @@ const useStyles = makeStyles({
 
 export default function App() {
     const classes = useStyles();
-
     return (
         <Grid>
         <Grid item>

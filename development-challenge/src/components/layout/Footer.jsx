@@ -1,12 +1,25 @@
-import { Paper, Tabs, Tab, Typography } from '@material-ui/core'
+import { Paper, Typography, makeStyles} from '@material-ui/core'
 import React from 'react'
-import ReactDOM from 'react-dom'
 
+const useStyles = makeStyles((theme) => ({
+  Paper: {
+    flex: 1,
+    width: '100%',
+    bottom: 0,
+    position: 'fixed',
+    backgroundColor: '#009adf',
+    padding: 10
+  },
+  Typography: {
+    color: '#fff',
+  }
+}));
 
 export default function Footer() {
+  const classes = useStyles();
     return (
-        <Paper style={{bottom: 0, position: 'fixed'}}>
-        <Typography variant="h6" align="center" color="primary">Jhonatan Konopp - 2021</Typography>
+        <Paper className={classes.Paper}>
+        <Typography className={classes.Typography} variant="h6" align="center">Jhonatan Konopp - 2021</Typography>
       </Paper>
     )
 }

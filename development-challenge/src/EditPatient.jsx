@@ -27,9 +27,8 @@ const styles = theme => ({
         margin: 20
     },
     Fab: {
-        position: "fixed", 
-        bottom: 60, 
-        right: 20
+        position: 'relative',
+        marginTop: theme.spacing(3),
     }
 
 })
@@ -143,7 +142,7 @@ export default withStyles(styles)(class CreatePatient extends Component {
                 <AddIcon />
             </Button> */}
             <Dialog open={open} onClose={this.handleToggle}>
-                <DialogTitle id="form-dialog-title">Adicionar um Paciente</DialogTitle>
+                <DialogTitle id="form-dialog-title">Editar Paciente</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         Por favor, preencha os dados abaixo:
