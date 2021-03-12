@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -14,6 +14,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import InfoIcon from '@material-ui/icons/Info';
+import Contact from '../../Contact';
+import About from '../../About';
 
 const useStyles = makeStyles((theme) => ({
     Menu: {
@@ -30,11 +32,13 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-export default function Menu() {
+export default function Header() {
     const classes = useStyles();
     const [state, setState] = React.useState({
         left: false,
     });
+    const [openAbout, setOpenAbout] = useState(false)
+    const [openContact, setOpenContact] = useState(false)
     const toggleDrawer = (anchor, open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
           return;
@@ -51,14 +55,14 @@ export default function Menu() {
           onKeyDown={toggleDrawer(anchor, false)}
         >
           <List>
-              <ListItem button key={'Contato'}>
+              <ListItem button key={'Contato'} onClick={() => setOpenContact(true)}>
                 <ListItemIcon><MailIcon/></ListItemIcon>
                 <ListItemText primary={'Contato'} />
               </ListItem>
           </List>
           <Divider />
           <List>
-              <ListItem button key={'Sobre'}>
+              <ListItem button key={'Sobre'} onClick={() => setOpenAbout(true)}>
                 <ListItemIcon><InfoIcon/></ListItemIcon>
                 <ListItemText primary={'Sobre'} />
               </ListItem>
@@ -85,6 +89,8 @@ export default function Menu() {
           </Drawer>
         </React.Fragment>
     </div>
+    {openContact && <Contact setOpenContact={setOpenContact} />}
+    {openAbout &&<About setOpenAbout={setOpenAbout} />}
     </div>
     );
 }

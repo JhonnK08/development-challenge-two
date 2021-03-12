@@ -22,7 +22,7 @@ const styles = theme => ({
     },
 })
 
-export default withStyles(styles)(class CreatePatient extends Component {
+export default withStyles(styles)(class EditPatient extends Component {
     state = {
         patient: this.props.patient,
     }
@@ -96,7 +96,7 @@ export default withStyles(styles)(class CreatePatient extends Component {
                 </DialogContent>
                 <DialogActions>
                         <Button color="primary" align="center" variant="contained" onClick={this.handleSubmit}>
-                            Adicionar
+                            Editar
                         </Button>
                 </DialogActions>
             </Dialog>
