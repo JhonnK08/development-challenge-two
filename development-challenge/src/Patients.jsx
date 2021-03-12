@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { Component, useEffect } from 'react';
 import {Paper, Table, TableBody, TableRow, TableHead, TableCell, TableContainer, Fade, Tooltip, withStyles, Button} from '@material-ui/core';
@@ -8,7 +8,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import SearchIcon from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton';
 import MuiAlert from '@material-ui/lab/Alert';
-import EditPatient from './EditPatient';
+import CreatePatient from './CreatePatient';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -71,11 +71,12 @@ export default withStyles(styles)(class Patients extends Component {
 
   getIDTable(id) {
     console.log(id)
+    this.setState({...this.state, removeId: id})
   }
 
 
-  removePatient = async () => {
-    const id = this.state.removeId
+  removePatient = async (id) => {
+    const id2 = this.state.removeId
     const params = {
       "id" : this.state.removeId
     }
@@ -95,10 +96,6 @@ export default withStyles(styles)(class Patients extends Component {
     } catch (err) {
       console.log(err);
     }
-  }
-
-  remove() {
-    this.setState({ openRemoveSucess: true, openRemove: false});
   }
   
 
@@ -137,7 +134,7 @@ export default withStyles(styles)(class Patients extends Component {
                     <TableCell >{body.sexo}</TableCell>
                     <TableCell align="center">
                       <Tooltip TransitionComponent={Fade} TransitionProps={{ timeout: 600 }} title="Editar">
-                        <IconButton onClick={this.getIDTable(body.id)}>
+                        <IconButton onClick={this.remove}>
                           <EditIcon></EditIcon>
                         </IconButton>
                       </Tooltip>
@@ -158,6 +155,7 @@ export default withStyles(styles)(class Patients extends Component {
             </Table>
           </TableContainer>
         </Paper>
+
         <Dialog
         open={openRemove}
         onClose={this.handleToggle}
@@ -173,16 +171,19 @@ export default withStyles(styles)(class Patients extends Component {
           <Button onClick={this.handleToggle} color="primary">
             Não
           </Button>
-          <Button onClick={this.remove} color="primary">
+          <Button onClick={this.removePatient} color="primary">
             Sim
           </Button>
         </DialogActions>
       </Dialog>
+
       <Snackbar open={this.state.openRemoveSucess} autoHideDuration={3000} onClose={this.handleRemoveSnackbar}>
         <Alert severity="success" onClose={this.handleRemoveSnackbar}>
             Paciente deletado com sucesso!
         </Alert>
       </Snackbar>
+
+      <CreatePatient/>
       </div >
     )
   }

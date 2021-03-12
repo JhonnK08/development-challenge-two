@@ -12,9 +12,7 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import MailIcon from '@material-ui/icons/Mail';
-import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import InfoIcon from '@material-ui/icons/Info';
 
 const useStyles = makeStyles((theme) => ({
@@ -77,7 +75,7 @@ export default function Menu() {
           <Typography variant="h6" color="inherit" style={{flex: 1}}>
             Controle de Pacientes
           </Typography>
-          <img src="https://medcloud.link/svgs/medcloud-white.svg" width="100"/>
+          <img src="https://medcloud.link/svgs/medcloud-white.svg" alt="Logo Medcloud" width="100"/>
         </Toolbar>
       </AppBar>
       <div>

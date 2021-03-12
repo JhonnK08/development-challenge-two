@@ -75,6 +75,16 @@ export default withStyles(styles)(class CreatePatient extends Component {
         })
     }
 
+    makeid = (length) => {
+        var result           = '';
+        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+           result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+     }
+
     fetchPatients = async () => {
         try {
             const res = await axios.get('/patients');
@@ -94,8 +104,9 @@ export default withStyles(styles)(class CreatePatient extends Component {
     }
 
     handleSubmit = async () => {
+        const id = this.makeid(16)
         const params = {
-            "id": this.state.lastId,
+            "id": id,
             "nome": this.state.patient.nome,
             "cpf": this.state.patient.cpf,
             "endereco": this.state.patient.endereco,
@@ -110,6 +121,7 @@ export default withStyles(styles)(class CreatePatient extends Component {
             console.log(params)
             await axios.post(`/patients/{id}`, params).then(() => this.setState({ openSucess: true }));
             this.setState({ patients: [...this.state.patients, this.state.patient] })
+            this.props.addPatient(params)
             this.setState({
                 patient: {
                     id: "",
@@ -124,6 +136,7 @@ export default withStyles(styles)(class CreatePatient extends Component {
                     obs: ""
                 }
             })
+            this.setState({...this.state,open: false})
         } catch (err) {
             console.log(err)
         }
@@ -150,8 +163,8 @@ export default withStyles(styles)(class CreatePatient extends Component {
                 </DialogContentText>
                     <form onSubmit={event => this.handleSubmit()}>
                         <TextField className={classes.FormControl} id="nome" label="Nome Completo" value={nome} onChange={this.handleChange('nome')} margin="normal" required />
-                        <TextField className={classes.FormControlNumbers} id="cpf" label="CPF" value={cpf} onChange={this.handleChange('cpf')} type="number" margin="normal" required />
-                        <TextField className={classes.FormControlNumbers} id="telefone" label="Telefone" value={telefone} onChange={this.handleChange('telefone')} type="number" margin="normal" />
+                        <TextField className={classes.FormControlNumbers} id="cpf" label="CPF" value={cpf} onChange={this.handleChange('cpf')}  margin="normal" required />
+                        <TextField className={classes.FormControlNumbers} id="telefone" label="Telefone" value={telefone} onChange={this.handleChange('telefone')} margin="normal" />
                         <TextField className={classes.FormControl} id="email" label="Email" value={email} onChange={this.handleChange('email')} type="email" margin="normal" />
                         <TextField className={classes.FormControlNumbers} id="dataNasc" label="Data de Nascimento" value={dataNasc} onChange={this.handleChange('dataNasc')} type="date" margin="normal" InputLabelProps={{ shrink: true }} />
                         <FormControl className={classes.Select}>
@@ -167,7 +180,7 @@ export default withStyles(styles)(class CreatePatient extends Component {
                             </Select>
                         </FormControl>
                         <TextField className={classes.FormControl} id="endereco" label="Endereço" value={endereco} onChange={this.handleChange('endereco')} margin="normal" />
-                        <TextField className={classes.FormControlNumbers} id="cep" label="CEP" value={cep} onChange={this.handleChange('cep')} type="number" margin="normal" />
+                        <TextField className={classes.FormControlNumbers} id="cep" label="CEP" value={cep} onChange={this.handleChange('cep')} margin="normal" />
                         <TextField className={classes.FormControl} id="obs" label="Observações" value={obs} onChange={this.handleChange('obs')} margin="normal" multiline rows="3" />
                     </form>
                 </DialogContent>

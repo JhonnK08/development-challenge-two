@@ -1,11 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {Button, Grid, Typography} from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
-import Patients from './Patients';
 import CreatePatient from './CreatePatient'
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
+import PatientsFunction from './PatientsFunction';
 
 const useStyles = makeStyles({
   });
@@ -20,8 +19,7 @@ export default function App() {
         <Grid item container>
             <Grid item xs={false} sm={2}/>
             <Grid item xs={12} sm={8}>
-                <Patients/>
-                <CreatePatient/>
+                <PatientsFunction />
             </Grid>
             <Grid item xs={false} sm={2} />
         </Grid>
